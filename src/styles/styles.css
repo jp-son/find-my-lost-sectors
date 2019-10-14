@@ -1,0 +1,23 @@
+.map-wrapper {
+	margin: 0 auto;
+	width: 1306px;
+	position: relative;
+}
+
+.map-point {
+    width: 8px;
+    height: 8px;
+    /*top: 100px;
+    left: 0px;*/
+    border-radius: 4px;
+    background-color: #f00;
+    position: absolute;
+}
+
+.bgInfo {
+	background-image: url('../images/mercury.png');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	height: auto;
+	width: auto;
+}
