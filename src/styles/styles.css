@@ -1,5 +1,5 @@
 .map-wrapper {
-	margin: 0 auto;
+	/*margin: 0 auto;*/
 	width: 1306px;
 	position: relative;
 }
@@ -20,4 +20,16 @@
 	background-attachment: fixed;
 	height: auto;
 	width: auto;
+}
+
+.inputStyle {
+	background-color: #33334d;
+	color: white;
+	border: 0;
+	font-family: helvetica;
+	font-weight: bold;
+	padding: 8px;
+	border-radius: 50px;
+	width: 400px;
+	text-align: center;
 }
