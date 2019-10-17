@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
 import {lsdata} from './lostsectordata.js';
 import { Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import '../styles/styles.css';
 
 class Home extends React.Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			lsObject: {}
+			proceedMap: false,
+			inputString:"",
+			displayName:"",
+			mID:"",
+			charData:{},
 		}
 
-		this.callAPI = this.callAPI.bind(this);
+		this.searchPlayer = this.searchPlayer.bind(this);
+		this.getCharacters = this.getCharacters.bind(this);
+		this.inputHandler = this.inputHandler.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 	}
 
-	callAPI() {
-		let targetURL = "https://www.bungie.net/Platform/Destiny2/3/Profile/4611686018488108812/Character/2305843009468074119/?components=202";
+	searchPlayer() {
+		let targetURL = "https://www.bungie.net/Platform/Destiny2/SearchDestinyPlayer/3/" + this.state.inputString + "/";
 
 			fetch(targetURL, { headers: {
 				'X-API-KEY': 'c2f6f171ac5a45049af04b87f3587605'
@@ -22,23 +30,81 @@ class Home extends React.Component {
 	            .then((response) => response.json())
 	            .then((response) => {
 	                this.setState({
-	                	lsObject: response.Response.progressions.data.checklists["3142056444"]
-	                }, () => console.log(this.state.lsObject))
+	                	displayName: response.Response[0].displayName,
+	                	mID: response.Response[0].membershipId,
+	                }, () => this.getCharacters())
 	            })
 	            .catch(( error ) => {
-	                console.error(error)
+	                alert("Player does not exist");
 	            })
 	}
 
-	/*componentDidMount() {
-	    this.callAPI();
-	}*/
+	getCharacters() {
+		let targetURL = "https://www.bungie.net/Platform/Destiny2/3/Profile/" + this.state.mID + "/?components=200";
+
+			fetch(targetURL, { headers: {
+				'X-API-KEY': 'c2f6f171ac5a45049af04b87f3587605'
+			}})
+	            .then((response) => response.json())
+	            .then((response) => {
+	                this.setState({
+	                	charData: response.Response.characters.data,
+	                	proceedMap: true
+	                })
+	            })
+	            .catch(( error ) => {
+	                console.error(error)
+	            })			
+	}
+
+	inputHandler(event) {
+		this.setState({ inputString: event.target.value });
+	}
+
+	handleClick() {
+		if (this.state.inputString != "") {
+			this.searchPlayer();
+		}
+	}
 
 	render() {
-		//console.log(this.state.lsObject);
+		if (this.state.proceedMap) {
+			return (<Redirect to={{
+						pathname:'/Director',
+						state: { ign: this.state.inputString,
+								 displayName: this.state.displayName,
+								 mID: this.state.mID,
+								 charData: this.state.charData }			
+					}}/>
+			);
+		}
+
 		return (
-			//<div className="map-point"></div>
-			<Link className="btn btn-light" to="/Director">Click to see world map</Link>
+			<div className="container">
+				<div className="row" style={{paddingTop:30}}>
+					<div className="pr-2">
+						<input
+							className="inputStyle"
+							placeholder="Enter your in-game name"
+							value= {this.state.inputString}
+							onChange = {this.inputHandler}
+						/>
+					</div>
+					<div className="btn-group pl-5">
+	                    <button 
+	                        type="button" 
+	                        className="btn btn-light"
+	                        onClick = {this.handleClick} 
+	                    >
+	                        Go!
+	                    </button>
+	            	</div>
+	            </div>
+
+	            <div className="row" style={{paddingTop:100, paddingLeft: 50}}>
+					<Link className="btn btn-light" to="/Director">Click to see world map without login</Link>
+	            </div>
+	        </div>
 		)
 	}	
 }
