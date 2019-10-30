@@ -1,2 +1,2 @@
 # find-my-lost-sectors
-Repository for Find My Lost Sectors.
+Track your Destiny 2 the Game Lost Sector Dungeon locations.
