@@ -26,7 +26,8 @@ class Mercury extends React.Component {
 	}
 
 	callAPI() {
-		let targetURL = "https://www.bungie.net/Platform/Destiny2/3/Profile/4611686018488108812/Character/2305843009468074119/?components=202";
+		//let targetURL = "https://www.bungie.net/Platform/Destiny2/3/Profile/4611686018488108812/Character/2305843009468074119/?components=202";
+		let targetURL = this.props.location.state.checklist;
 
 			fetch(targetURL, { headers: {
 				'X-API-KEY': 'c2f6f171ac5a45049af04b87f3587605'
@@ -43,7 +44,9 @@ class Mercury extends React.Component {
 	}
 
 	componentDidMount() {
-	    this.callAPI();
+		console.log(this.props.location.state.checklistURL);
+		console.log("https://www.bungie.net/Platform/Destiny2/3/Profile/4611686018488108812/Character/2305843009468074119/?components=202");
+	    //this.callAPI();
 	}
 
 	setDotProperties(x,y) {
@@ -71,7 +74,7 @@ class Mercury extends React.Component {
 	render() {
 		return (
 			<div className="map-wrapper">
-				<img height="742" width="1306" src={map} usemap="#imageMap"></img>
+				<img height="742" width="1306" src={map} useMap="#imageMap"></img>
 				<map name="imageMap">
 					<div onClick={() => console.log("Yoooo")}>
 						<area shape="circle" coords="787,544,12"/>
