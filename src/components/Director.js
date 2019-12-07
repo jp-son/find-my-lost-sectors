@@ -28,12 +28,13 @@ class Director extends React.Component {
 			displayName: "",
 			mID: "",
 			charData: "",
-			imgLink: ""
+			imgLink: "",
+			checklistURL: ""
 		}
 
 		//this.searchPlayer = this.searchPlayer.bind(this);
 		this.getCharacters = this.getCharacters.bind(this);
-		this.setImage = this.setImage.bind(this);
+		this.setCharacters = this.setCharacters.bind(this);
 	}
 
 	/*searchPlayer() {
@@ -72,12 +73,10 @@ class Director extends React.Component {
 	}*/
 
 	getCharacters() {
-        let characters = []
-
-        //if (this.props.location.state.displayName === undefined) return characters;
+        let characters = [];
 
         Object.keys(this.state.charData).forEach((key) => {
-            characters.push(<li onClick={() => this.setImage(key)}>
+            characters.push(<li onClick={() => this.setCharacters(key)}>
             	<a href="#" style={{color:'black'}}>{classMap[this.state.charData[key].classHash]}</a>
             </li>);
         });
@@ -85,13 +84,14 @@ class Director extends React.Component {
         return characters;
     }
 
-	setImage(key) {
+	setCharacters(key) {
 		//let temp = "https://www.bungie.net/" + key;
 		let temp = "https://www.bungie.net/" + this.state.charData[key].emblemPath;
 		//console.log(temp);
 		this.setState({
-			imgLink: temp
-		}, () => console.log(this.state.imgLink))
+			imgLink: temp,
+			checklistURL: "https://www.bungie.net/Platform/Destiny2/3/Profile/" + this.state.mID + "/Character/" + key + "/?components=202"
+		}, () => console.log())
 	}
 
 	componentDidMount() {
@@ -114,7 +114,8 @@ class Director extends React.Component {
 		    	displayName: this.props.location.state.displayName,
 				mID: this.props.location.state.mID,
 				charData: this.props.location.state.charData,
-				imgLink: "https://www.bungie.net/" + this.props.location.state.charData[Object.keys(this.props.location.state.charData)[0]].emblemPath
+				imgLink: "https://www.bungie.net/" + this.props.location.state.charData[Object.keys(this.props.location.state.charData)[0]].emblemPath,
+				checklistURL: "https://www.bungie.net/Platform/Destiny2/3/Profile/" + this.props.location.state.mID + "/Character/" + Object.keys(this.props.location.state.charData)[0] + "/?components=202"
 			})	
 	    }
 	}
@@ -136,7 +137,12 @@ class Director extends React.Component {
 								<Link to="/Io"> 
 									<area shape="circle" coords="84,155,56"/>
 								</Link>
-								<Link to="/Mercury"> 
+								<Link to={{
+									pathname: "/Mercury",
+									state: {
+										checklistURL: this.state.checklistURL
+									}
+								}}>
 									<area shape="circle" coords="330,70,36"/>
 								</Link>
 								<Link to="/Mars"> 
