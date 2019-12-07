@@ -74,6 +74,8 @@ class Director extends React.Component {
 	getCharacters() {
         let characters = []
 
+        //if (this.props.location.state.displayName === undefined) return characters;
+
         Object.keys(this.state.charData).forEach((key) => {
             characters.push(<li onClick={() => this.setImage(key)}>
             	<a href="#" style={{color:'black'}}>{classMap[this.state.charData[key].classHash]}</a>
@@ -99,12 +101,22 @@ class Director extends React.Component {
 	    else {
 	    	this.props.locations.state = sessionStorage.getItem("tempdata");
 	    }*/
-	    this.setState({
-	    	displayName: this.props.location.state.displayName,
-			mID: this.props.location.state.mID,
-			charData: this.props.location.state.charData,
-			imgLink: "https://www.bungie.net/" + this.props.location.state.charData[Object.keys(this.props.location.state.charData)[0]].emblemPath
-		})	
+	    if (this.props.location.state === undefined) {
+	    	this.setState({
+		    	displayName: "No Profile",
+				mID: -1,
+				charData: -1,
+				imgLink: -1
+			})	
+	    }
+	    else {
+		    this.setState({
+		    	displayName: this.props.location.state.displayName,
+				mID: this.props.location.state.mID,
+				charData: this.props.location.state.charData,
+				imgLink: "https://www.bungie.net/" + this.props.location.state.charData[Object.keys(this.props.location.state.charData)[0]].emblemPath
+			})	
+	    }
 	}
 
 	render() {
