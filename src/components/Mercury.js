@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import '../styles/styles.css';
 import map from '../images/mercury.png'
 
-const styleObj = {
+/*const styleObj = {
 	width: 8,
 	height: 8,
 	top: 100,
@@ -10,24 +12,29 @@ const styleObj = {
 	borderRadius: 4,
 	backgroundColor: "red",
 	position: "absolute"
-};
+};*/
 
 class Mercury extends React.Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
 			lsObject: {},
-			dotObject: styleObj,
-			test: true,
+			modalShow: false,
 		}
 
 		this.callAPI = this.callAPI.bind(this);
 		this.setDotProperties = this.setDotProperties.bind(this);
+		this.setModalShow = this.setModalShow.bind(this);
+		//this.dotWrapper = this.dotWrapper.bind(this);
 	}
 
+	/*dotWrapper() {
+		//this.setDotProperties(778, 533, 3107552723);
+	}*/
+
 	callAPI() {
-		//let targetURL = "https://www.bungie.net/Platform/Destiny2/3/Profile/4611686018488108812/Character/2305843009468074119/?components=202";
-		let targetURL = this.props.location.state.checklist;
+		let targetURL = this.props.location.state.checklistURL;
+		console.log(targetURL)
 
 			fetch(targetURL, { headers: {
 				'X-API-KEY': 'c2f6f171ac5a45049af04b87f3587605'
@@ -36,7 +43,7 @@ class Mercury extends React.Component {
 	            .then((response) => {
 	                this.setState({
 	                	lsObject: response.Response.progressions.data.checklists["3142056444"]
-	                }, () => console.log(this.state.lsObject))
+	                })
 	            })
 	            .catch(( error ) => {
 	                console.error(error)
@@ -44,12 +51,10 @@ class Mercury extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log(this.props.location.state.checklistURL);
-		console.log("https://www.bungie.net/Platform/Destiny2/3/Profile/4611686018488108812/Character/2305843009468074119/?components=202");
-	    //this.callAPI();
+	    this.callAPI();
 	}
 
-	setDotProperties(x,y) {
+	setDotProperties(x,y, id) {
 		let dot = {
 			width: 20,
 			height: 20,
@@ -57,18 +62,20 @@ class Mercury extends React.Component {
 			left: x,
 			borderRadius: 4,
 			borderStyle:"solid",
-			borderColor:"red",
+			borderColor: 0,
 			borderWidth: 2,
 			position: "absolute",
 			cursor: "pointer"
 		}
 
-		if (this.state.test == true) {
-			dot["borderColor"] = "#00FE0F";
-			//dot["borderWidth"] = 0;
-		}	
+		if (this.state.lsObject[id]) dot["borderColor"] = "#00FE0F";
+		else if (this.state.lsObject[id] !== undefined) dot["borderColor"] = "red";
 
 		return (<div style={dot}></div>)
+	}
+
+	setModalShow(showBoolean) {
+		this.setState({modalShow: showBoolean});
 	}
 
 	render() {
@@ -76,11 +83,24 @@ class Mercury extends React.Component {
 			<div className="map-wrapper">
 				<img height="742" width="1306" src={map} useMap="#imageMap"></img>
 				<map name="imageMap">
-					<div onClick={() => console.log("Yoooo")}>
+					<div onClick={() => {this.setModalShow(true)}}>
 						<area shape="circle" coords="787,544,12"/>
-						{this.setDotProperties(778,533)}
+						{this.setDotProperties(778,533, 3107552723)}
 					</div>
 				</map>
+				<Modal show={this.state.modalShow} centered onHide={() => {this.setModalShow(false)}}>
+					<Modal.Header closeButton>
+						<Modal.Title>Modal title</Modal.Title>
+					</Modal.Header>
+
+					<Modal.Body>
+						<p>Modal body text goes here.</p>
+					</Modal.Body>
+
+					<Modal.Footer>
+						<Button onClick={() => {this.setModalShow(false)}}>Close</Button>
+					</Modal.Footer>
+				</Modal>
 			</div>
 		)
 	}	
