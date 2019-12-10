@@ -3,16 +3,7 @@ import { Modal } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import '../styles/styles.css';
 import map from '../images/mercury.png'
-
-/*const styleObj = {
-	width: 8,
-	height: 8,
-	top: 100,
-	left: 0,
-	borderRadius: 4,
-	backgroundColor: "red",
-	position: "absolute"
-};*/
+import { lsdata } from './lostsectordata.js'
 
 class Mercury extends React.Component {
 	constructor(props, context) {
@@ -20,17 +11,16 @@ class Mercury extends React.Component {
 		this.state = {
 			lsObject: {},
 			modalShow: false,
+			modalTitle: "",
+			modalBoss: "",
+			modalType: "",
 		}
 
 		this.callAPI = this.callAPI.bind(this);
 		this.setDotProperties = this.setDotProperties.bind(this);
-		this.setModalShow = this.setModalShow.bind(this);
-		//this.dotWrapper = this.dotWrapper.bind(this);
+		this.setModal = this.setModal.bind(this);
+		this.closeModal = this.closeModal.bind(this);
 	}
-
-	/*dotWrapper() {
-		//this.setDotProperties(778, 533, 3107552723);
-	}*/
 
 	callAPI() {
 		let targetURL = this.props.location.state.checklistURL;
@@ -51,6 +41,7 @@ class Mercury extends React.Component {
 	}
 
 	componentDidMount() {
+		//console.log(lsdata)
 	    this.callAPI();
 	}
 
@@ -61,21 +52,36 @@ class Mercury extends React.Component {
 			top: y,
 			left: x,
 			borderRadius: 4,
-			borderStyle:"solid",
+			borderStyle:"transparent",
 			borderColor: 0,
 			borderWidth: 2,
 			position: "absolute",
 			cursor: "pointer"
 		}
 
-		if (this.state.lsObject[id]) dot["borderColor"] = "#00FE0F";
-		else if (this.state.lsObject[id] !== undefined) dot["borderColor"] = "red";
+		if (this.state.lsObject[id]) {
+			dot["borderColor"] = "#00FE0F";
+			dot["borderStyle"] = "solid";
+		}
+		else if (this.state.lsObject[id] !== undefined) {
+			dot["borderColor"] = "red";
+			dot["borderStyle"] = "solid";
+		}
 
 		return (<div style={dot}></div>)
 	}
 
-	setModalShow(showBoolean) {
-		this.setState({modalShow: showBoolean});
+	setModal(sectorID) {
+		this.setState({
+			modalShow: true,
+			modalTitle: lsdata["mercury"][sectorID].name,
+			modalBoss: lsdata["mercury"][sectorID].boss,
+			modalType: lsdata["mercury"][sectorID].type
+		});
+	}
+
+	closeModal() {
+		this.setState({modalShow: false});
 	}
 
 	render() {
@@ -83,22 +89,23 @@ class Mercury extends React.Component {
 			<div className="map-wrapper">
 				<img height="742" width="1306" src={map} useMap="#imageMap"></img>
 				<map name="imageMap">
-					<div onClick={() => {this.setModalShow(true)}}>
+					<div onClick={() => {this.setModal(3107552723)}}>
 						<area shape="circle" coords="787,544,12"/>
-						{this.setDotProperties(778,533, 3107552723)}
+						{this.setDotProperties(778,533,3107552723)}
 					</div>
 				</map>
-				<Modal show={this.state.modalShow} centered onHide={() => {this.setModalShow(false)}}>
+				<Modal show={this.state.modalShow} centered onHide={() => {this.closeModal()}}>
 					<Modal.Header closeButton>
-						<Modal.Title>Modal title</Modal.Title>
+						<Modal.Title>{this.state.modalTitle}</Modal.Title>
 					</Modal.Header>
 
 					<Modal.Body>
-						<p>Modal body text goes here.</p>
+						<p>Lost Sector Boss: {this.state.modalBoss}</p>
+						<p>Lost Sector Enemy Type: {this.state.modalType}</p>
 					</Modal.Body>
 
 					<Modal.Footer>
-						<Button onClick={() => {this.setModalShow(false)}}>Close</Button>
+						<Button onClick={() => {this.closeModal()}}>Close</Button>
 					</Modal.Footer>
 				</Modal>
 			</div>
