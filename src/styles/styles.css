@@ -1,29 +1,55 @@
 .map-wrapper {
 	/*margin: 0 auto;*/
+	/*width: 1306px;*/
+	max-width: 100%;
+	/*left: 147px;
+	overflow: hidden;*/
+}
+
+.test {
+	/*max-width: 70%;
+	max-height: 70%;*/
+
 	width: 1306px;
+	height: 742px;
+
+	/*height: auto;*/
+}
+
+.map-wrapper2 {
+	/*max-width: 1306px;
+	height: auto;*/
+
+	width: 1306px;
+	/*width: 100%;*/
 	position: relative;
 }
 
 .map-point {
     width: 8px;
     height: 8px;
-    /*top: 100px;
-    left: 0px;*/
+    top: 0px;
+    left: 0px;
     border-radius: 4px;
     background-color: #f00;
     position: absolute;
 }
 
+.flex-fill {
+   flex: 1 1 auto;
+}
+
 .bgInfo {
-	background-image: url('../images/mercury.png');
+	background-image: url('../images/34605.jpg');
 	background-repeat: no-repeat;
-	background-attachment: fixed;
-	height: auto;
-	width: auto;
+	background-position: center;
+	background-size: cover;
+	height: 100vh;
 }
 
 .inputStyle {
 	background-color: #33334d;
+	background-size: cover;
 	color: white;
 	border: 0;
 	font-family: helvetica;
@@ -32,4 +58,21 @@
 	border-radius: 50px;
 	width: 400px;
 	text-align: center;
+}
+
+.navbarHome {
+	background-color: #253050;
+	position: absolute;
+	width: 100vw;
+}
+
+.navbarDefault {
+	background-color: #253050;
+}
+
+.profileBox {
+	border-style: solid;
+	border-width: 2px;
+	border-color: white;
+	background-color: #342E45;
 }

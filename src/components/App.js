@@ -9,8 +9,8 @@ const style = {
 
 const App = () => (
     <div className="App-header">
-        <h2 style={{marginBottom: 0}} className="headerInfo pb-5">Find My Lost Sectors</h2>
-        <Header />
+        {/*<h2 style={{marginBottom: 0}} className="headerInfo pb-5">Find My Lost Sectors</h2>*/}
+        {/*<Header />*/}
         <Main />
     </div>
 )

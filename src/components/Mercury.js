@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import { Image } from 'react-bootstrap';
 import '../styles/styles.css';
 import map from '../images/mercury.png'
 import { lsdata } from './lostsectordata.js'
@@ -14,6 +15,7 @@ class Mercury extends React.Component {
 			modalTitle: "",
 			modalBoss: "",
 			modalType: "",
+			leftOffset: (window.screen.width - 1306) / 2
 		}
 
 		this.callAPI = this.callAPI.bind(this);
@@ -41,6 +43,7 @@ class Mercury extends React.Component {
 	}
 
 	componentDidMount() {
+		console.log(window.screen.width);
 		//console.log(lsdata)
 	    this.callAPI();
 	}
@@ -86,8 +89,8 @@ class Mercury extends React.Component {
 
 	render() {
 		return (
-			<div className="map-wrapper">
-				<img height="742" width="1306" src={map} useMap="#imageMap"></img>
+			<div className="map-wrapper2" style={{left: this.state.leftOffset}}>
+				<img className="test" src={map} useMap="#imageMap"></img>
 				<map name="imageMap">
 					<div onClick={() => {this.setModal(3107552723)}}>
 						<area shape="circle" coords="787,544,12"/>

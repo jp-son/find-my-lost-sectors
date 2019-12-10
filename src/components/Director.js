@@ -4,6 +4,7 @@ import worldMap from '../images/main.png'
 import { Link } from 'react-router-dom'
 import '../styles/styles.css';
 import ct from '../images/circletest.png'
+import Header from './Header'
 
 const styleObj = {
 	width: 8,
@@ -29,12 +30,15 @@ class Director extends React.Component {
 			mID: "",
 			charData: "",
 			imgLink: "",
-			checklistURL: ""
+			checklistURL: "",
+			imageHeight: 0,
+			imageWidth: 0,
 		}
 
 		//this.searchPlayer = this.searchPlayer.bind(this);
 		this.getCharacters = this.getCharacters.bind(this);
 		this.setCharacters = this.setCharacters.bind(this);
+		this.setMap = this.setMap.bind(this);
 	}
 
 	/*searchPlayer() {
@@ -95,6 +99,13 @@ class Director extends React.Component {
 	}
 
 	componentDidMount() {
+		console.log(this.refs.inner.clientHeight);
+		console.log(this.refs.inner.clientWidth);
+		this.setState({
+			imageHeight: this.refs.inner.clientHeight,
+			imageWidth: this.refs.inner.clientWidth,
+		})
+		//console.log(this.refs.inner.clientWidth);
 	    /*if (this.props.location.state) {
 	    	sessionStorage.setItem("tempdata", this.props.location.state);
 	    }
@@ -120,15 +131,36 @@ class Director extends React.Component {
 	    }
 	}
 
+	setMap() {
+		let arr = [];
+
+		arr.push(
+			<Link to="/Io"> 
+				<area shape="circle" coords="69,119,46"/>
+			</Link>,
+			<Link to="/Titan">
+				<area shape="circle" coords="0,0,46"/>
+			</Link>
+		)
+
+		return arr;
+	}
+
 	render() {
-		//console.log(this.props.location.state.charData[Object.keys(this.props.location.state.charData)[0]].emblemPath);
 		return (
-				<div className="row" style={{margin:0}}>
-					<div className="col" style={{padding:0}}>
-						<div className="map-wrapper">
-							<img height="742" width="1306" src={worldMap} useMap="#imageMap"></img>
+			<div>
+				<div className="navbarDefault">
+					<Header />
+				</div>
+
+				<div className="container-fluid">
+					<div className="row">
+						<div className="col-sm-8" style={{padding:0}} ref="inner">
+							<div className="map-point"></div>
+							<img className="map-wrapper" src={worldMap} useMap="#imageMap"></img>
 							<map name="imageMap">
-								<Link to='/EDZ'>
+								{this.setMap()};
+								{/*<Link to='/EDZ'>
 									<area shape="circle" coords="643,423,119"/>
 								</Link>
 								<Link to="/Moon"> 
@@ -159,22 +191,23 @@ class Director extends React.Component {
 								</Link>
 								<Link to="/DreamingCity"> 
 									<area shape="circle" coords="1200,352,63"/>
-								</Link>
+								</Link>*/}
 							</map>
 						</div>
-					</div>
-					<div className="col" style={{textAlign:"center"}}>
-						<img src={this.state.imgLink}></img>
-						<h1><strong>{this.state.displayName}</strong></h1>
-						<div className="dropdown">
-						  	<button className="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown">Dropdown
-						  	<span className="caret"></span></button>
-						  	<ul className="dropdown-menu">
-						  		{this.getCharacters()}
-						  	</ul>
+						<div className="col-sm-4 profileBox" style={{textAlign:"center"}}>
+							<img src={this.state.imgLink}></img>
+							<h1><strong>{this.state.displayName}</strong></h1>
+							<div className="dropdown">
+							  	<button className="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown">Dropdown
+							  	<span className="caret"></span></button>
+							  	<ul className="dropdown-menu">
+							  		{this.getCharacters()}
+							  	</ul>
+							</div>
 						</div>
 					</div>
 				</div>
+			</div>
 		)
 	}	
 }

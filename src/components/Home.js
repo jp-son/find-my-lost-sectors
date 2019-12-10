@@ -3,6 +3,7 @@ import {lsdata} from './lostsectordata.js';
 import { Link } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import '../styles/styles.css';
+import Header from './Header';
 
 class Home extends React.Component {
 	constructor(props, context) {
@@ -80,30 +81,35 @@ class Home extends React.Component {
 		}
 
 		return (
-			<div className="container">
-				<div className="row" style={{paddingTop:30}}>
-					<div className="pr-2">
-						<input
-							className="inputStyle"
-							placeholder="Enter your in-game name"
-							value= {this.state.inputString}
-							onChange = {this.inputHandler}
-						/>
-					</div>
-					<div className="btn-group pl-5">
-	                    <button 
-	                        type="button" 
-	                        className="btn btn-light"
-	                        onClick = {this.handleClick} 
-	                    >
-	                        Go!
-	                    </button>
-	            	</div>
-	            </div>
+			<div>
+				<div className="navbarHome">
+					<Header />
+				</div>
+				<div className="container-fluid bgInfo pt-5">
+					<div className="row pt-5">
+						<div className="pr-2">
+							<input
+								className="inputStyle"
+								placeholder="Enter your in-game name"
+								value= {this.state.inputString}
+								onChange = {this.inputHandler}
+							/>
+						</div>
+						<div className="btn-group pl-5">
+		                    <button 
+		                        type="button" 
+		                        className="btn btn-dark"
+		                        onClick = {this.handleClick} 
+		                    >
+		                        Go!
+		                    </button>
+		            	</div>
+		            </div>
 
-	            <div className="row" style={{paddingTop:100, paddingLeft: 50}}>
-					<Link className="btn btn-light" to="/Director">Click to see world map without login</Link>
-	            </div>
+		            <div className="row" style={{paddingTop:100, paddingLeft: 50}}>
+						<Link className="btn btn-dark" to="/Director">Click to see world map without login</Link>
+		            </div>
+		        </div>
 	        </div>
 		)
 	}	
