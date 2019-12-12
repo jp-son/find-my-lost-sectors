@@ -1,5 +1,10 @@
 const lsdata = {
-	"io": {
+	"Io": {
+		positionInfo: {
+			xCoord: 84,
+			yCoord: 155,
+			radius: 56
+		},
 		4137615299:	{
 				name: "Aphix Conduit",
 				id: 4137615299,
@@ -20,7 +25,12 @@ const lsdata = {
 		}
 	},
 
-	"titan": {
+	"Titan": {
+		positionInfo: {
+			xCoord: 204,
+			yCoord: 577,
+			radius: 52
+		},
 		3359286509: {
 				name: "Cargo Bay 3",
 				id: 3359286509,
@@ -41,7 +51,12 @@ const lsdata = {
 		}
 	},
 
-	"tangled shore": {
+	"TangledShore": {
+		positionInfo: {
+			xCoord: 1096,
+			yCoord: 543,
+			radius: 74
+		},
 		4232901662: {
 				name: "Kingship Dock",
 				id: 4232901662,
@@ -74,7 +89,12 @@ const lsdata = {
 		}
 	},
 
-	"dreaming city": {
+	"DreamingCity": {
+		positionInfo: {
+			xCoord: 1200,
+			yCoord: 352,
+			radius: 63
+		},
 		486022069: {
 				name: "Aphelion's Rest",
 				id: 486022069,
@@ -95,7 +115,12 @@ const lsdata = {
 		}
 	},
 
-	"edz": {
+	"EDZ": {
+		positionInfo: {
+			xCoord: 643,
+			yCoord: 423,
+			radius: 119
+		},
 		526088259: {
 				name: "Atrium",
 				id: 526088259,
@@ -195,7 +220,12 @@ const lsdata = {
 		}
 	},
 
-	"nessus": {
+	"Nessus": {
+		positionInfo: {
+			xCoord: 1110,
+			yCoord: 71,
+			radius: 48
+		},
 		925785517: {
 				name: "The Ancient's Haunt",
 				id: 925785517,
@@ -228,7 +258,12 @@ const lsdata = {
 		}
 	},
 
-	"mercury": {
+	"Mercury": {
+		positionInfo: {
+			xCoord: 330,
+			yCoord: 70,
+			radius: 36
+		},
 		3107552723: {
 				name: "Pariah's Refuge",
 				id: 3107552723,
@@ -237,7 +272,12 @@ const lsdata = {
 		}
 	},		
 
-	"mars": {
+	"Mars": {
+		positionInfo: {
+			xCoord: 298,
+			yCoord: 316,
+			radius: 64
+		},
 		3205937151: {
 				name: "Core Terminus",
 				id: 3205937151,
@@ -252,7 +292,12 @@ const lsdata = {
 		}
 	},
 
-	"moon": {
+	"Moon": {
+		positionInfo: {
+			xCoord: 927,
+			yCoord: 266,
+			radius: 40
+		},
 		2955806106: {
 				name: "K1 Communion",
 				id: 2955806106,

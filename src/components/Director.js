@@ -35,46 +35,11 @@ class Director extends React.Component {
 			imageWidth: 0,
 		}
 
-		//this.searchPlayer = this.searchPlayer.bind(this);
 		this.getCharacters = this.getCharacters.bind(this);
 		this.setCharacters = this.setCharacters.bind(this);
 		this.setMap = this.setMap.bind(this);
+		this.imageLoaded = this.imageLoaded.bind(this);
 	}
-
-	/*searchPlayer() {
-		let targetURL = "https://www.bungie.net/Platform/Destiny2/SearchDestinyPlayer/-1/" + this.props.location.state.ign + "/";
-
-			fetch(targetURL, { headers: {
-				'X-API-KEY': 'c2f6f171ac5a45049af04b87f3587605'
-			}})
-	            .then((response) => response.json())
-	            .then((response) => {
-	                this.setState({
-	                	displayName: response.Response[0].displayName,
-	                	mID: response.Response[0].membershipId,
-	                }, () => this.getCharacters())
-	            })
-	            .catch(( error ) => {
-	                console.error(error)
-	            })
-	}*/
-
-	/*getCharacters() {
-		let targetURL = "https://www.bungie.net/Platform/Destiny2/3/Profile/" + this.state.mID + "/?components=200";
-
-			fetch(targetURL, { headers: {
-				'X-API-KEY': 'c2f6f171ac5a45049af04b87f3587605'
-			}})
-	            .then((response) => response.json())
-	            .then((response) => {
-	                this.setState({
-	                	charData: response.Response.characters.data,
-	                }, () => this.setImage())
-	            })
-	            .catch(( error ) => {
-	                console.error(error)
-	            })			
-	}*/
 
 	getCharacters() {
         let characters = [];
@@ -99,12 +64,6 @@ class Director extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log(this.refs.inner.clientHeight);
-		console.log(this.refs.inner.clientWidth);
-		this.setState({
-			imageHeight: this.refs.inner.clientHeight,
-			imageWidth: this.refs.inner.clientWidth,
-		})
 		//console.log(this.refs.inner.clientWidth);
 	    /*if (this.props.location.state) {
 	    	sessionStorage.setItem("tempdata", this.props.location.state);
@@ -131,17 +90,42 @@ class Director extends React.Component {
 	    }
 	}
 
+	imageLoaded({target:img}) {
+		this.setState({
+			imageHeight: img.offsetHeight,
+			imageWidth: img.offsetWidth,
+		});
+	}
+
 	setMap() {
 		let arr = [];
 
-		arr.push(
-			<Link to="/Io"> 
-				<area shape="circle" coords="69,119,46"/>
-			</Link>,
-			<Link to="/Titan">
-				<area shape="circle" coords="0,0,46"/>
-			</Link>
-		)
+		//console.log(this.state.imageWidth);
+		//console.log(this.state.imageHeight);
+
+        Object.keys(lsdata).forEach((key) => {
+        	let name = "/" + key;
+        	let xCoord = Math.ceil(this.state.imageWidth * (lsdata[key].positionInfo.xCoord / 1306));
+        	let yCoord = Math.ceil(this.state.imageHeight * (lsdata[key].positionInfo.yCoord / 742));
+        	let radius = Math.ceil(this.state.imageWidth * (lsdata[key].positionInfo.radius / 1306));
+        	let inputCoords = xCoord + "," + yCoord + "," + radius;
+
+        	/*console.log(key + " xCoord: " + xCoord);
+        	console.log(key + " yCoord: " + yCoord);
+        	console.log(key + " radius: " + radius);*/
+
+        	console.log(inputCoords);
+        	arr.push(
+				<Link to={{
+					pathname: name,
+					state: {
+						checklistURL: this.state.checklistURL
+					}
+				}}>
+					<area shape="circle" coords={inputCoords}/>
+				</Link>
+        	)
+        });
 
 		return arr;
 	}
@@ -155,45 +139,14 @@ class Director extends React.Component {
 
 				<div className="container-fluid">
 					<div className="row">
-						<div className="col-sm-8" style={{padding:0}} ref="inner">
-							<div className="map-point"></div>
-							<img className="map-wrapper" src={worldMap} useMap="#imageMap"></img>
+
+						<div className="col-sm-8" style={{padding:0}}>
+							<img className="map-wrapper" src={worldMap} useMap="#imageMap" onLoad={this.imageLoaded}></img>
 							<map name="imageMap">
 								{this.setMap()};
-								{/*<Link to='/EDZ'>
-									<area shape="circle" coords="643,423,119"/>
-								</Link>
-								<Link to="/Moon"> 
-									<area shape="circle" coords="927,266,40"/>
-								</Link>
-								<Link to="/Io"> 
-									<area shape="circle" coords="84,155,56"/>
-								</Link>
-								<Link to={{
-									pathname: "/Mercury",
-									state: {
-										checklistURL: this.state.checklistURL
-									}
-								}}>
-									<area shape="circle" coords="330,70,36"/>
-								</Link>
-								<Link to="/Mars"> 
-									<area shape="circle" coords="298,316,64"/>
-								</Link>
-								<Link to="/Titan"> 
-									<area shape="circle" coords="204,577,52"/>
-								</Link>
-								<Link to="/TangledShore"> 
-									<area shape="circle" coords="1096,543,74"/>
-								</Link>
-								<Link to="/Nessus"> 
-									<area shape="circle" coords="1110,71,48"/>
-								</Link>
-								<Link to="/DreamingCity"> 
-									<area shape="circle" coords="1200,352,63"/>
-								</Link>*/}
 							</map>
 						</div>
+
 						<div className="col-sm-4 profileBox" style={{textAlign:"center"}}>
 							<img src={this.state.imgLink}></img>
 							<h1><strong>{this.state.displayName}</strong></h1>
@@ -205,6 +158,7 @@ class Director extends React.Component {
 							  	</ul>
 							</div>
 						</div>
+
 					</div>
 				</div>
 			</div>
