@@ -268,7 +268,12 @@ const lsdata = {
 				name: "Pariah's Refuge",
 				id: 3107552723,
 				type: "Vex",
-				boss: "Subterranean Minotaur"
+				boss: "Subterranean Minotaur",
+				xCoord: 787,
+				yCoord: 544,
+				radius: 12,
+				xCircle: 775,
+				yCircle: 533
 		}
 	},		
 

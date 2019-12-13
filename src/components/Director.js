@@ -114,7 +114,7 @@ class Director extends React.Component {
         	console.log(key + " yCoord: " + yCoord);
         	console.log(key + " radius: " + radius);*/
 
-        	console.log(inputCoords);
+        	//console.log(inputCoords);
         	arr.push(
 				<Link to={{
 					pathname: name,

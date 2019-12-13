@@ -5,6 +5,8 @@ import { Image } from 'react-bootstrap';
 import '../styles/styles.css';
 import map from '../images/mercury.png'
 import { lsdata } from './lostsectordata.js'
+import Header from './Header'
+import { Link } from 'react-router-dom'
 
 class Mercury extends React.Component {
 	constructor(props, context) {
@@ -15,18 +17,21 @@ class Mercury extends React.Component {
 			modalTitle: "",
 			modalBoss: "",
 			modalType: "",
-			leftOffset: (window.screen.width - 1306) / 2
+			imageHeight: 0,
+			imageWidth: 0,
 		}
 
 		this.callAPI = this.callAPI.bind(this);
 		this.setDotProperties = this.setDotProperties.bind(this);
 		this.setModal = this.setModal.bind(this);
 		this.closeModal = this.closeModal.bind(this);
+		this.setMap = this.setMap.bind(this);
+		this.imageLoaded = this.imageLoaded.bind(this);
 	}
 
 	callAPI() {
 		let targetURL = this.props.location.state.checklistURL;
-		console.log(targetURL)
+		//console.log(targetURL);
 
 			fetch(targetURL, { headers: {
 				'X-API-KEY': 'c2f6f171ac5a45049af04b87f3587605'
@@ -43,15 +48,17 @@ class Mercury extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log(window.screen.width);
 		//console.log(lsdata)
 	    this.callAPI();
 	}
 
-	setDotProperties(x,y, id) {
+	setDotProperties(x, y, id) {
+		let scaledWidth = Math.ceil(this.state.imageWidth * (20 / 1306));
+		let scaledHeight = Math.ceil(this.state.imageHeight * (20 / 742));
+
 		let dot = {
-			width: 20,
-			height: 20,
+			width: scaledWidth,
+			height: scaledHeight,
 			top: y,
 			left: x,
 			borderRadius: 4,
@@ -74,12 +81,51 @@ class Mercury extends React.Component {
 		return (<div style={dot}></div>)
 	}
 
+	imageLoaded({target:img}) {
+		this.setState({
+			imageHeight: img.offsetHeight,
+			imageWidth: img.offsetWidth,
+		});
+	}
+
+	setMap() {
+		let arr = [];
+
+        Object.keys(lsdata["Mercury"]).forEach((key) => {
+        	//console.log(key);
+        	if (key != 'positionInfo') {
+        		console.log(key);
+	        	let xCoord = Math.ceil(this.state.imageWidth * (lsdata["Mercury"][key].xCoord / 1306));
+	        	let yCoord = Math.ceil(this.state.imageHeight * (lsdata["Mercury"][key].yCoord / 742));
+	        	let radius = Math.ceil(this.state.imageWidth * (lsdata["Mercury"][key].radius / 1306));
+	        	let inputCoords = xCoord + "," + yCoord + "," + radius;
+
+	        	let xCircle = Math.ceil(this.state.imageWidth * (lsdata["Mercury"][key].xCircle / 1306));
+	        	let yCircle = Math.ceil(this.state.imageHeight * (lsdata["Mercury"][key].yCircle / 742));
+
+	        	arr.push(
+					<div onClick={() => {this.setModal(key)}}>
+						<area shape="circle" coords={inputCoords}/>
+						{this.setDotProperties(xCircle, yCircle, key)};
+					</div>
+	        	);
+	        }
+        });
+
+
+		/*<Link to='/Moon'>
+			<area shape="circle" coords={inputCoords}/>
+		</Link>*/
+
+		return arr;		
+	}
+
 	setModal(sectorID) {
 		this.setState({
 			modalShow: true,
-			modalTitle: lsdata["mercury"][sectorID].name,
-			modalBoss: lsdata["mercury"][sectorID].boss,
-			modalType: lsdata["mercury"][sectorID].type
+			modalTitle: lsdata["Mercury"][sectorID].name,
+			modalBoss: lsdata["Mercury"][sectorID].boss,
+			modalType: lsdata["Mercury"][sectorID].type
 		});
 	}
 
@@ -89,14 +135,28 @@ class Mercury extends React.Component {
 
 	render() {
 		return (
-			<div className="map-wrapper2" style={{left: this.state.leftOffset}}>
-				<img className="test" src={map} useMap="#imageMap"></img>
-				<map name="imageMap">
-					<div onClick={() => {this.setModal(3107552723)}}>
-						<area shape="circle" coords="787,544,12"/>
-						{this.setDotProperties(778,533,3107552723)}
+			<div>
+				<div className="navbarDefault">
+					<Header />
+				</div>
+
+				<div className="container-fluid">
+
+					<div className="row">
+						<div className="col-sm-8" style={{padding: 0, height: this.state.imageHeight}}>
+							<img className="map-wrapper" src={map} useMap="#imageMap" onLoad={this.imageLoaded}></img>
+							<map name="imageMap">
+								{this.setMap()};
+							</map>
+						</div>
+
+						<div className="col-sm-4 profileBox" style={{textAlign: "center"}}>
+							<h1>TODO: Filter Options</h1>
+						</div>
 					</div>
-				</map>
+
+				</div>
+
 				<Modal show={this.state.modalShow} centered onHide={() => {this.closeModal()}}>
 					<Modal.Header closeButton>
 						<Modal.Title>{this.state.modalTitle}</Modal.Title>
@@ -111,6 +171,7 @@ class Mercury extends React.Component {
 						<Button onClick={() => {this.closeModal()}}>Close</Button>
 					</Modal.Footer>
 				</Modal>
+
 			</div>
 		)
 	}	
